@@ -22,7 +22,7 @@ Logica in een proces moet via een yaml test specificatie automatisch getest word
 * Elke expressie en `given_state` wordt m.b.v. van de [FEEL implementatie](https://camunda.github.io/feel-scala/) uitgevoerd.
 * Het id van de route waarvoor de expressie waar is wordt vergeleken met `expect_route_activated`.
 
-Het formaat beschrijft naam van de test, de proces data, het id van de gateway dat uitgevoerd moet worden en het verwachte resultaat (geactiveerde route).
+Het formaat beschrijft naam van de test, de proces data, het id van de gateway of decision model dat uitgevoerd moet worden en het verwachte resultaat (geactiveerde route of resultaat).
 
 ```yaml
 - scenario: name_of_test_scenario 
