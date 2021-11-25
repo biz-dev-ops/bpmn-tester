@@ -17,10 +17,11 @@ Logica in een proces moet via een yaml test specificatie automatisch getest word
 * Een script zoek recursief naar alle *.bpmn.tests bestanden. Voor elke test bestand moet het bpmn bestand (- .tests extenstie) bestaan.
 * Het .bpmn.tests bestand wordt gevalideerd op juistheid;
 * Het .bpmn bestand wordt gevalideerd op juistheid (https://github.com/bpmn-io/bpmn-js-bpmnlint);
-* Voor elke test word het gateway element opgezocht aan de hand van `when_executing_gateway`.
-* De expressies van alle uitgaande gateway routes worden geëxtraheerd;
+* Voor elke test word de logica opgezocht in de process definitie:
+*   * de expressies van alle uitgaande gateway routes aan de hand van `when_executing_gateway`;
+    * de DMN expressie op basis van `when_executing_decision`;
 * Elke expressie en `given_state` wordt m.b.v. van de [FEEL implementatie](https://camunda.github.io/feel-scala/) uitgevoerd.
-* Het id van de route waarvoor de expressie waar is wordt vergeleken met `expect_route_activated`.
+* Het uitkomst wordt vergeleken met het verwachte resultaat: `expect_route_activated` of `expect_result`
 
 Het formaat beschrijft naam van de test, de proces data, het id van de gateway of decision model dat uitgevoerd moet worden en het verwachte resultaat (geactiveerde route of resultaat).
 
