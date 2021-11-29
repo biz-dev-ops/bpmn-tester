@@ -18,10 +18,10 @@ Logica in een proces moet via een yaml test specificatie automatisch getest word
 * Het .bpmn.tests bestand wordt gevalideerd op juistheid;
 * Het .bpmn bestand wordt gevalideerd op juistheid (https://github.com/bpmn-io/bpmn-js-bpmnlint);
 * Voor elke test word de logica opgezocht in de process definitie:
-*   * de expressies van alle uitgaande gateway routes aan de hand van `when_executing_gateway`;
+*   * de expressies van alle uitgaande gateway flows aan de hand van `when_executing_gateway`;
     * de DMN expressie op basis van `when_executing_decision`;
 * Elke expressie en `given_state` wordt m.b.v. van de [FEEL implementatie](https://camunda.github.io/feel-scala/) uitgevoerd.
-* Het uitkomst wordt vergeleken met het verwachte resultaat: `expect_route_activated` of `expect_result`
+* Het uitkomst wordt vergeleken met het verwachte resultaat: `expect_flow_activated` of `expect_result`
 
 Het formaat beschrijft naam van de test, de proces data, het id van de gateway of decision model dat uitgevoerd moet worden en het verwachte resultaat (geactiveerde route of resultaat).
 
@@ -29,7 +29,7 @@ Het formaat beschrijft naam van de test, de proces data, het id van de gateway o
 - scenario: name_of_test_scenario 
   given_state: state_object    
   when_executing_gateway: id_of_gateway
-  expect_route_activated: id_of_route
+  expect_flow_activated: id_of_flow
   
 - scenario: name_of_test_scenario 
   given_state: state_object    
@@ -38,11 +38,18 @@ Het formaat beschrijft naam van de test, de proces data, het id van de gateway o
 
 ```
 
+Ze voor een voorbeeld implementatie de volgende bestanden:
+
+* https://github.com/synionnl/website/blob/feature/bot/docs/blog/bizdevops/living-documentation/process.feature
+* https://github.com/arjangeertsema/hexagonal-architecture/blob/main/Domain/Domain.UseCases.Tests/Steps/ProcessStepDefintions.cs
+
 ## Delevirables
 
 * Test script
 * Docker file
 * Github workflow action
 * Test resultaat als te dowloaden json bestand
+
+
 
 
