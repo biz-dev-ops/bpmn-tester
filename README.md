@@ -59,7 +59,7 @@ Ze voor een voorbeeld implementatie de volgende bestanden:
 
 ## Class diagram
 
-![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml)
+![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml&v=2)
 
 ## Pseudo code
 
