@@ -50,6 +50,125 @@ Ze voor een voorbeeld implementatie de volgende bestanden:
 * Github workflow action
 * Test resultaat als te dowloaden json bestand
 
+## Class model
+
+```plantuml
+
+class BPMN {
+  string defintion
+}
+
+class BPMNFeature {
+  string name
+  Scenario[] scenarios
+}
+
+interface Scenario {
+  string name
+}
+
+class ExclusiveGatewayScenario {
+  object state
+  string gateway
+  string expectedFlow
+}
+
+class ParallelGatewayScenario {
+  object state
+  string gateway
+  string[] expectedFlows
+}
+
+class DMNScenario {  
+  object state
+  string dmn
+  object expectedResult
+}
+
+class BPMNTestFactory
+{
+  BPMNTest Create(BPMNFeature feature)
+}
+
+class BPMNTest
+{
+  TestResult[] Execute()
+}
+
+interface TestResult
+{
+  string description  
+}
+
+interface TestScenario {
+  TestResult Execute()
+}
+
+
+BPMN <-- BPMNFeature : references
+BPMNFeature "1" *-- "many" Scenario : contains
+
+Scenario <|.. ExclusiveGatewayScenario
+Scenario <|.. ParallelGatewayScenario
+Scenario <|.. DMNScenario
+
+BPMNFeature -> BPMNTestFactory : based on
+BPMNTestFactory --> BPMNTest : create
+BPMNTest "1" *- "many" TestResult : has
+
+TestResult <|.. PassTestResult
+TestResult <|.. FailTestResult
+
+BPMNTest o-- TestScenario : composite
+
+TestScenario <|.. ExclusiveGatewayTest
+TestScenario <|.. ParallelGatewayTest
+TestScenario <|.. DMNTest
+
+```
+
+## Pseudo code
+
+### Main
+
+```
+
+var results = []
+var features > *.bpmn.tests files
+foreach var feature in features
+  var test = testFactory.create(feature)    
+  results.add(test.execute())
+
+foreach var result in results
+  assert result;
+
+```
+
+### ExclusiveGatewayTest
+
+```
+
+ExclusiveGatewayTest.Execute(GatewayScenario scenario) =>
+  var gateway = bpmn.findGateway(scenario.gateway)
+
+  if(gateway == null)
+    return new FailTestResult()
+
+  var defaultFlow = gateway.flows
+    .singleOrDefault(f => f.id == gateway.defaultFlow)
+
+  var activatedFlow = gateway.flows
+    .where(f => f.id != gateway.defaultFlow)
+    .single(f => feelParser.execute(scenario.state, flow.expression))
+
+  if(activatedFlow?.id != scenario.expectedFlow and defaultFlow?.id != scenario.expectedFlow)
+    return new FailTestResult()
+
+  return new PassTestResult()
+
+```
+
+### 
 
 
 
