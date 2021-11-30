@@ -50,82 +50,9 @@ Ze voor een voorbeeld implementatie de volgende bestanden:
 * Github workflow action
 * Test resultaat als te dowloaden json bestand
 
-## Class model
+## Class diagram
 
-```plantuml
-
-class BPMN {
-  string defintion
-}
-
-class BPMNFeature {
-  string name
-  Scenario[] scenarios
-}
-
-interface Scenario {
-  string name
-}
-
-class ExclusiveGatewayScenario {
-  object state
-  string gateway
-  string expectedFlow
-}
-
-class ParallelGatewayScenario {
-  object state
-  string gateway
-  string[] expectedFlows
-}
-
-class DMNScenario {  
-  object state
-  string dmn
-  object expectedResult
-}
-
-class BPMNTestFactory
-{
-  BPMNTest Create(BPMNFeature feature)
-}
-
-class BPMNTest
-{
-  TestResult[] Execute()
-}
-
-interface TestResult
-{
-  string description  
-}
-
-interface TestScenario {
-  TestResult Execute()
-}
-
-
-BPMN <-- BPMNFeature : references
-BPMNFeature "1" *-- "many" Scenario : contains
-
-Scenario <|.. ExclusiveGatewayScenario
-Scenario <|.. ParallelGatewayScenario
-Scenario <|.. DMNScenario
-
-BPMNFeature -> BPMNTestFactory : based on
-BPMNTestFactory --> BPMNTest : create
-BPMNTest "1" *- "many" TestResult : has
-
-TestResult <|.. PassTestResult
-TestResult <|.. FailTestResult
-
-BPMNTest o-- TestScenario : composite
-
-TestScenario <|.. ExclusiveGatewayTest
-TestScenario <|.. ParallelGatewayTest
-TestScenario <|.. DMNTest
-
-```
+![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml)
 
 ## Pseudo code
 
@@ -139,8 +66,10 @@ foreach var feature in features
   var test = testFactory.create(feature)    
   results.add(test.execute())
 
+export(results) //Zodat het gebruikt kan worden in de living documentation pipeline].
+
 foreach var result in results
-  assert result;
+  assert(result);
 
 ```
 
@@ -152,7 +81,7 @@ ExclusiveGatewayTest.Execute(GatewayScenario scenario) =>
   var gateway = bpmn.findGateway(scenario.gateway)
 
   if(gateway == null)
-    return new FailTestResult()
+    return new FailTestResult(scenario, "Gateway not found")
 
   var defaultFlow = gateway.flows
     .singleOrDefault(f => f.id == gateway.defaultFlow)
@@ -162,9 +91,9 @@ ExclusiveGatewayTest.Execute(GatewayScenario scenario) =>
     .single(f => feelParser.execute(scenario.state, flow.expression))
 
   if(activatedFlow?.id != scenario.expectedFlow and defaultFlow?.id != scenario.expectedFlow)
-    return new FailTestResult()
+    return new FailTestResult(scenario, "Expected flow is not activated")
 
-  return new PassTestResult()
+  return new PassTestResult(scenario)
 
 ```
 
