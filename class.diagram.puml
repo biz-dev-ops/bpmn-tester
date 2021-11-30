@@ -50,6 +50,10 @@ interface TestScenario {
   TestResult Execute()
 }
 
+interface FeelParser {
+    object Parse(object state, string expression)
+}
+
 
 BPMN <-- BPMNFeature : references
 BPMNFeature "1" *-- "many" Scenario : contains
@@ -60,15 +64,21 @@ Scenario <|.. DMNScenario
 
 BPMNFeature -> BPMNTestFactory : based on
 BPMNTestFactory --> BPMNTest : create
-BPMNTest "1" *- "many" TestResult : has
-
+BPMNTest "1" *- "many" TestResult : "                             "
 TestResult <|.. PassTestResult
 TestResult <|.. FailTestResult
 
-BPMNTest o-- TestScenario : composite
+BPMNTest o-- "many" TestScenario : composite
 
 TestScenario <|.. ExclusiveGatewayTest
 TestScenario <|.. ParallelGatewayTest
 TestScenario <|.. DMNTest
+
+ExclusiveGatewayTest --> FeelParser : uses
+ParallelGatewayTest --> FeelParser : uses
+DMNTest --> FeelParser : uses
+
+FeelParser <|.. ScalaFeelParser
+FeelParser <|.. SpringFeelParser
 
 @enduml

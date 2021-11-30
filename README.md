@@ -30,6 +30,13 @@ Het formaat beschrijft naam van de test, de proces data, het id van de gateway o
   given_state: state_object    
   when_executing_gateway: id_of_gateway
   expect_flow_activated: id_of_flow
+
+- scenario: name_of_test_scenario 
+  given_state: state_object    
+  when_executing_gateway: id_of_gateway
+  expect_flows_activated:
+    - id_of_flow
+    - id_of_flow
   
 - scenario: name_of_test_scenario 
   given_state: state_object    
@@ -47,8 +54,7 @@ Ze voor een voorbeeld implementatie de volgende bestanden:
 
 * Test script
 * Docker file
-* Github workflow action
-* Test resultaat als te dowloaden json bestand
+* [Github workflow action](https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action)
 
 ## Class diagram
 
