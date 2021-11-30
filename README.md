@@ -26,6 +26,7 @@ Logica in een proces moet via een yaml test specificatie automatisch getest word
 Het formaat beschrijft naam van de test, de proces data, het id van de gateway of decision model dat uitgevoerd moet worden en het verwachte resultaat (geactiveerde route of resultaat).
 
 ```yaml
+
 - scenario: name_of_test_scenario 
   given_state: state_object    
   when_executing_gateway: id_of_gateway
