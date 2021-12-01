@@ -6,7 +6,12 @@ De business is eigenaar van alle business interfaces waaronder ook de bedrijfspr
 
 Logica (expressies) worden in FEEL formaat geschreven. FEEL is een DMN standaard zoals [beschreven in de DMN specificatie.](https://www.omg.org/spec/DMN/). Zie ook [Camunda documentatie](https://docs.camunda.io/docs/reference/feel/what-is-feel/) voor meer informatie.
 
-Camunda heeft een opensource [FEEL parser](https://camunda.github.io/feel-scala/) geschreven.
+Er bestaan verschillende implementaties van de expressie taal:
+
+* [Canmunda FEEL parser](https://camunda.github.io/feel-scala/);
+* [Spring exprssion language parser](https://docs.spring.io/spring-framework/docs/3.0.x/reference/expressions.html)
+
+De implementatie moet via dependency injectie te configureren zijn.
 
 ## Gewenst resultaat
 
@@ -20,7 +25,7 @@ Logica in een proces moet via een yaml test specificatie automatisch getest word
 * Voor elke test word de logica opgezocht in de process definitie:
 *   * de expressies van alle uitgaande gateway flows aan de hand van `when_executing_gateway`;
     * de DMN expressie op basis van `when_executing_decision`;
-* Elke expressie en `given_state` wordt m.b.v. van de [FEEL implementatie](https://camunda.github.io/feel-scala/) uitgevoerd.
+* Elke expressie en `given_state` wordt m.b.v. van de expression parser implementatie uitgevoerd.
 * Het uitkomst wordt vergeleken met het verwachte resultaat: `expect_flow_activated` of `expect_result`
 
 Het formaat beschrijft naam van de test, de proces data, het id van de gateway of decision model dat uitgevoerd moet worden en het verwachte resultaat (geactiveerde route of resultaat).
@@ -59,7 +64,7 @@ Ze voor een voorbeeld implementatie de volgende bestanden:
 
 ## Class diagram
 
-![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml&v=2)
+![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml&v=7)
 
 ## Pseudo code
 
@@ -91,11 +96,14 @@ ExclusiveGatewayTest.Execute(GatewayScenario scenario) =>
     return new FailTestResult(scenario, "Gateway not found")
 
   var defaultFlow = gateway.flows
-    .singleOrDefault(f => f.id == gateway.defaultFlow)
+    .singleOrDefault(flow => flow.id == gateway.defaultFlow)
 
   var activatedFlow = gateway.flows
-    .where(f => f.id != gateway.defaultFlow)
-    .single(f => feelParser.execute(scenario.state, flow.expression))
+    .where(flow => 
+      flow.id != gateway.defaultFlow && 
+      expressionParser.parse(scenario.state, flow.expression) == true
+    )
+    .singleOrDefault()
 
   if(activatedFlow?.id != scenario.expectedFlow and defaultFlow?.id != scenario.expectedFlow)
     return new FailTestResult(scenario, "Expected flow is not activated")

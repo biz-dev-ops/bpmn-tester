@@ -50,7 +50,7 @@ interface TestScenario {
   TestResult Execute()
 }
 
-interface FeelParser {
+interface ExpressionParser {
     object Parse(object state, string expression)
 }
 
@@ -74,11 +74,11 @@ TestScenario <|.. ExclusiveGatewayTest
 TestScenario <|.. ParallelGatewayTest
 TestScenario <|.. DMNTest
 
-ExclusiveGatewayTest --> FeelParser : uses
-ParallelGatewayTest --> FeelParser : uses
-DMNTest --> FeelParser : uses
+ExclusiveGatewayTest --> ExpressionParser : uses
+ParallelGatewayTest --> ExpressionParser : uses
+DMNTest --> ExpressionParser : uses
 
-FeelParser <|.. ScalaFeelParser
-FeelParser <|.. SpringFeelParser
+ExpressionParser <|.. FeelScalaExpressionParser
+ExpressionParser <|.. SpelExpressionParser
 
 @enduml
