@@ -79,6 +79,6 @@ ParallelGatewayTest --> ExpressionParser : uses
 DMNTest --> ExpressionParser : uses
 
 ExpressionParser <|.. FeelScalaExpressionParser
-ExpressionParser <|.. SpelExpressionParser
+ExpressionParser <|.. SpringExpressionParser
 
 @enduml

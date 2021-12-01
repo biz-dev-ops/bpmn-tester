@@ -9,7 +9,7 @@ Logica (expressies) worden in FEEL formaat geschreven. FEEL is een DMN standaard
 Er bestaan verschillende implementaties van de expressie taal:
 
 * [Canmunda FEEL parser](https://camunda.github.io/feel-scala/);
-* [Spring exprssion language parser](https://docs.spring.io/spring-framework/docs/3.0.x/reference/expressions.html)
+* [Spring expression language (SPEL) parser](https://docs.spring.io/spring-framework/docs/3.0.x/reference/expressions.html)
 
 De implementatie moet via dependency injectie te configureren zijn.
 
@@ -64,7 +64,7 @@ Ze voor een voorbeeld implementatie de volgende bestanden:
 
 ## Class diagram
 
-![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml&v=7)
+![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml&v=8)
 
 ## Pseudo code
 
