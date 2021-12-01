@@ -64,7 +64,7 @@ Ze voor een voorbeeld implementatie de volgende bestanden:
 
 ## Class diagram
 
-![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml&v=8)
+![class diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/synionnl/bpmn-tester/main/class.diagram.puml&v=9)
 
 ## Pseudo code
 
@@ -111,8 +111,3 @@ ExclusiveGatewayTest.Execute(GatewayScenario scenario) =>
   return new PassTestResult(scenario)
 
 ```
-
-### 
-
-
-
